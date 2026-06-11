@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo Secreto - Canais Gulosinhos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f0c20 0%, #15102a 50%, #060211 100%);
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --accent-gradient: linear-gradient(90deg, #ff416c, #ff4b2b);
+            --panic-gradient: linear-gradient(90deg, #f12711, #f5af19);
+            --text-main: #f5f5f7;
+            --text-muted: #86868b;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: #ff416c;
+            filter: blur(150px);
+            opacity: 0.1;
+            top: 10%;
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--card-border);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            width: 100%;
+            max-width: 450px;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+        }
+
+        .lista-botoes {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-canal {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-decoration: none;
+            color: var(--text-main);
+            padding: 1.2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-canal span.name {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .btn-canal span.desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .btn-canal:hover {
+            transform: translateY(-4px);
+            background: var(--accent-gradient);
+            border-color: transparent;
+            box-shadow: 0 12px 24px rgba(255, 65, 108, 0.25);
+        }
+
+        .btn-canal:hover span.desc {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .btn-panic {
+            width: 100%;
+            padding: 1.1rem;
+            background: var(--panic-gradient);
+            border: none;
+            border-radius: 16px;
+            color: white;
+            font-family: inherit;
+            font-weight: 800;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            box-shadow: 0 4px 15px rgba(241, 39, 17, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-panic:hover {
+            transform: scale(1.02);
+            filter: brightness(1.2);
+            box-shadow: 0 6px 20px rgba(241, 39, 17, 0.5);
+        }
+
+        /* Mural de Comentários */
+        .comments-section {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 24px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 450px;
+            z-index: 1;
+        }
+
+        .comments-section h3 { 
+            margin-bottom: 1.2rem; 
+            font-size: 1.2rem; 
+            font-weight: 800;
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .comment-form input, .comment-form textarea {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            padding: 0.9rem;
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: border 0.2s;
+        }
+
+        .comment-form input:focus, .comment-form textarea:focus {
+            outline: none;
+            border-color: #ff416c;
+        }
+
+        .comment-form button {
+            background: #ffffff;
+            color: #000;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .comment-form button:hover { opacity: 0.9; }
+
+        .comments-list {
+            text-align: left;
+            max-height: 250px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding-right: 5px;
+        }
+
+        .comment-item {
+            background: rgba(255,255,255,0.02);
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 3px solid #ff416c;
+        }
+
+        .comment-author { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.3rem; }
+        .comment-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Canais Gulosinhos</h1>
+        <div class="subtitle">O cofre digital do arrependimento adolescente</div>
+        
+        <div class="lista-botoes">
+            <a href="https://youtu.be/lLNL0q-O1cE?si=0Fw9xOJFH7CbZHuN" target="_blank" class="btn-canal">
+                <span class="name">Canal do Davi B</span>
+                <span class="desc">Especialista em manobras de Hand "spner"</span>
+            </a>
+            
+            <a href="https://youtu.be/laS4dD55Jkw?si=DrkP2LGmef9U1xmv&t=430" target="_blank" class="btn-canal">
+                <span class="name">Canal do João G</span>
+                <span class="desc">Aulas de elevador & Ligação no meio do vídeo</span>
+            </a>
+            
+            <a href="https://www.youtube.com/shorts/W4QE9fQT-9U" target="_blank" class="btn-canal">
+                <span class="name">Canal do Calebe</span>
+                <span class="desc">Análise profunda sobre horários de van escolar</span>
+            </a>
+        </div>
+
+        <button class="btn-panic" onclick="dispararPanico('https://www.youtube.com/watch?v=-ddAcJZRX9o')">
+            🚨 BOTÃO DE PÂNICO 🚨
+        </button>
+    </div>
+
+    <div class="comments-section">
+        <h3>Mural da Humilhação Coletiva</h3>
+        <form class="comment-form" id="commentForm">
+            <input type="text" id="author" placeholder="Seu nome / Vulgo" required>
+            <textarea id="content" placeholder="Insira aqui sua crítica destrutiva..." rows="3" required></textarea>
+            <button type="submit">Enviar Exposed</button>
+        </form>
+        
+        <div class="comments-list" id="commentsList">
+            <div class="comment-item">
+                <div class="comment-author">Historiador da Internet</div>
+                <div class="comment-text">Alguém por favor arrume um segundo celular pro Davi marcar os segundos do Spinner.</div>
+            </div>
+            <div class="comment-item">
+                <div class="comment-author">Dirceu</div>
+                <div class="comment-text">Liguei pro João G no meio do tutorial só pra travar o Minecraft dele.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function dispararPanico(url) {
+            alert("SISTEMA CORROMPIDO! Iniciando contra-medidas de vergonha alheia...");
+            window.open(url, '_blank');
+        }
+
+        // Simulação do Frontend integrada via Fetch (Altere a URL quando subir o seu banco)
+        const API_URL = "https://seu-servidor.com/api/comments"; 
+
+        document.getElementById('commentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const author = document.getElementById('author').value;
+            const content = document.getElementById('content').value;
+
+            // Envio Real pro seu Servidor
+            try {
+                /* Quando o seu backend com SQLite estiver pronto, mude aqui:
+                await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ author, content })
+                });
+                */
+                
+                // Renderização em tempo de execução para teste local
+                const list = document.getElementById('commentsList');
+                const novoComentario = `<div class="comment-item">
+                    <div class="comment-author">${author}</div>
+                    <div class="comment-text">${content}</div>
+                </div>`;
+                
+                list.insertAdjacentHTML('afterbegin', novoComentario);
+                document.getElementById('commentForm').reset();
+            } catch (err) {
+                console.error("Erro ao conectar com o banco SQLite:", err);
+            }
+        });
+    </script>
+</body>
+</html>
