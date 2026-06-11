@@ -266,37 +266,55 @@
             window.open(url, '_blank');
         }
 
-        // Simulação do Frontend integrada via Fetch (Altere a URL quando subir o seu banco)
-        const API_URL = "https://seu-servidor.com/api/comments"; 
+// A URL gloriosa que a dona Christina gerou no seu systemd
+        const API_URL = "https://christina-maintain-procedures-undertake.trycloudflare.com/api/comments"; 
 
+        // Função crucial: Busca os exposeds reais direto do seu SQLite via túnel
+        async function carregarComentarios() {
+            try {
+                const res = await fetch(API_URL);
+                const comentarios = await res.json();
+                const list = document.getElementById('commentsList');
+                
+                list.innerHTML = ''; // Limpa a lista local antes de renderizar os reais
+                
+                comentarios.forEach(c => {
+                    list.innerHTML += `<div class="comment-item">
+                        <div class="comment-author">${c.author}</div>
+                        <div class="comment-text">${c.content}</div>
+                    </div>`;
+                });
+            } catch (err) {
+                console.error("Erro ao conectar com o banco de dados:", err);
+            }
+        }
+
+        // Dispara a busca assim que os gulosinhos abrirem a página
+        window.addEventListener('DOMContentLoaded', carregarComentarios);
+
+        // Envia o novo exposed para o servidor de verdade
         document.getElementById('commentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const author = document.getElementById('author').value;
             const content = document.getElementById('content').value;
 
-            // Envio Real pro seu Servidor
             try {
-                /* Quando o seu backend com SQLite estiver pronto, mude aqui:
-                await fetch(API_URL, {
+                // Envio Real pro seu Servidor Node.js
+                const response = await fetch(API_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ author, content })
                 });
-                */
-                
-                // Renderização em tempo de execução para teste local
-                const list = document.getElementById('commentsList');
-                const novoComentario = `<div class="comment-item">
-                    <div class="comment-author">${author}</div>
-                    <div class="comment-text">${content}</div>
-                </div>`;
-                
-                list.insertAdjacentHTML('afterbegin', novoComentario);
-                document.getElementById('commentForm').reset();
+
+                if (response.ok) {
+                    // Se o servidor salvou com sucesso, recarrega a lista atualizada
+                    carregarComentarios();
+                    document.getElementById('commentForm').reset();
+                } else {
+                    alert("O servidor recusou o seu exposed. Deve ser censura do Davi.");
+                }
             } catch (err) {
+                alert("Erro catastrófico. O túnel caiu ou você esqueceu de dar 'node server.js'.");
                 console.error("Erro ao conectar com o banco SQLite:", err);
             }
         });
-    </script>
-</body>
-</html>
